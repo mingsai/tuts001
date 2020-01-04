@@ -41,6 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
         'MarkerFelt',
         'Impact',
       ],
+      fontStyle: FontStyle.italic,
     ),
   );
   final macTextStyle = TextStyle(
@@ -48,6 +49,59 @@ class _MyHomePageState extends State<MyHomePage> {
     fontFamily: 'Impact',
     fontSize: 15,
   );
+
+  Widget getCentralFAB() {
+    return FloatingActionButton(
+      onPressed: _incrementCounter,
+      tooltip: 'Increment',
+      child: Icon(Icons.home),
+      isExtended: true,
+    );
+  }
+
+  Widget getColoredDivider({
+    BuildContext context,
+    double lineHeight = 4,
+    double lineMargin = 0.0,
+    Color lineColor = Colors.lightGreen,
+  }) {
+    return SizedBox(
+      child: Container(
+        color: lineColor,
+      ),
+      height: lineHeight,
+      width: MediaQuery.of(context).size.width - lineMargin,
+    );
+  }
+
+  Widget getEmbeddedFAB() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        5.0,
+        5.0,
+        5.0,
+        5.0,
+      ),
+      child: getCentralFAB(),
+    );
+  }
+
+  Widget getMaskForWidget(Widget embeddedChildWidget) {
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.white,
+            blurRadius: 15.0,
+          ),
+        ],
+        color: Colors.white,
+        shape: BoxShape.circle,
+      ),
+      child: embeddedChildWidget,
+    );
+  }
+
   void _incrementCounter() {
     setState(() {
       _counter++;
@@ -81,13 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ? macTextStyle
                         : googleTextStyle,
                   ),
-                  SizedBox(
-                    child: Container(
-                      color: Colors.lightGreen,
-                    ),
-                    height: 4,
-                    width: MediaQuery.of(context).size.width,
-                  ),
+                  getColoredDivider(context: context),
                   Text(
                     '$_counter',
                     style: Theme.of(context).textTheme.display3.merge(
@@ -116,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: 0,
-          items: [
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.menu),
               title: Text("Menu"),
@@ -129,32 +177,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       extendBody: true,
-      floatingActionButton: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.white,
-              blurRadius: 15.0,
-            ),
-          ],
-          color: Colors.white,
-          shape: BoxShape.circle,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(
-            5.0,
-            5.0,
-            5.0,
-            5.0,
-          ),
-          child: FloatingActionButton(
-            onPressed: _incrementCounter,
-            tooltip: 'Increment',
-            child: Icon(Icons.home),
-            isExtended: true,
-          ),
-        ),
-      ),
+      floatingActionButton: getMaskForWidget(getEmbeddedFAB()),
       floatingActionButtonLocation: FloatingActionButtonLocation
           .centerDocked, // This trailing comma makes auto-formatting nicer for build methods.
     );
