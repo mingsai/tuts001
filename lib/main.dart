@@ -46,9 +46,15 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   );
   final macTextStyle = TextStyle(
-    color: Colors.blueGrey,
-    fontFamily: 'Impact',
-    fontSize: 15,
+    color: Colors.purple[700],
+    fontFamily: 'MarkerFelt',
+    fontSize: 35,
+    fontWeight: FontWeight.w700,
+    fontFamilyFallback: [
+      'ComicSansMS',
+      'MarkerFelt',
+      'Impact',
+    ],
   );
 
   Widget _getMainFAB() {
@@ -65,14 +71,17 @@ class _MyHomePageState extends State<MyHomePage> {
     double lineHeight = 4,
     double lineMargin = 0.0,
     Color lineColor = Colors.brown,
+    double lineWidthFactor = 0,
   }) {
     return SizedBox(
-      child: Container(
-        color: lineColor,
-      ),
-      height: lineHeight,
-      width: MediaQuery.of(context).size.width - lineMargin,
-    );
+        child: Container(
+          color: lineColor,
+        ),
+        height: lineHeight,
+        width: MediaQuery.of(context).size.width -
+            (MediaQuery.of(context).size.width * lineWidthFactor)
+//      width: MediaQuery.of(context).size.width - lineMargin,
+        );
   }
 
   Widget _getDefaultBody() {
@@ -91,12 +100,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       ? macTextStyle
                       : googleTextStyle,
                 ),
-                _getColoredDivider(context: context),
+                _getColoredDivider(
+                    context: context,
+                    lineColor: Colors.pink[600],
+                    lineWidthFactor: 0.2), //better than using the linemargin?
                 Text(
                   '$_counter',
                   style: Theme.of(context).textTheme.display3.merge(
                         TextStyle(
-                          color: Colors.deepPurpleAccent,
+                          color: Colors.deepOrange[900],
                           fontSize: 60,
                         ),
                       ),

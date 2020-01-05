@@ -2,14 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MiCard extends StatelessWidget {
+  void _dismissKeyboard(BuildContext context) {
+    FocusScope.of(context).unfocus();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        CircleAvatar(
-          backgroundImage: AssetImage('assets/images/profile.png'),
-          radius: 50,
+        GestureDetector(
+          onTapUp: (details) {
+//            if (MediaQuery.of(context).viewInsets.bottom != 0.0)
+            _dismissKeyboard(context);
+          },
+          child: CircleAvatar(
+            backgroundImage: AssetImage('assets/images/profile.png'),
+            radius: 50,
+          ),
         ),
         Text(
           'Awesome Chick',
@@ -27,6 +37,9 @@ class MiCard extends StatelessWidget {
               border: InputBorder.none,
               hintText: 'Email Address',
             ),
+            onEditingComplete: () {
+              FocusScope.of(context).unfocus();
+            },
           ),
         ),
         SizedBox(
@@ -39,12 +52,16 @@ class MiCard extends StatelessWidget {
               alignLabelWithHint: true,
             ),
             obscureText: true,
+            onEditingComplete: () {
+              FocusScope.of(context).unfocus();
+            },
           ),
         ),
         FlatButton.icon(
           disabledColor: Colors.brown[50],
           color: Colors.brown[100],
           onPressed: () {
+            FocusScope.of(context).unfocus();
             print('Begin');
           },
           icon: Icon(Icons.person),
