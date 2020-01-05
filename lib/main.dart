@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tuts001/views/mi_card.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,20 +51,20 @@ class _MyHomePageState extends State<MyHomePage> {
     fontSize: 15,
   );
 
-  Widget getCentralFAB() {
+  Widget _getMainFAB() {
     return FloatingActionButton(
       onPressed: _incrementCounter,
       tooltip: 'Increment',
-      child: Icon(Icons.home),
+      child: Icon(Icons.star_border),
       isExtended: true,
     );
   }
 
-  Widget getColoredDivider({
+  Widget _getColoredDivider({
     BuildContext context,
     double lineHeight = 4,
     double lineMargin = 0.0,
-    Color lineColor = Colors.lightGreen,
+    Color lineColor = Colors.brown,
   }) {
     return SizedBox(
       child: Container(
@@ -74,7 +75,41 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget getEmbeddedFAB() {
+  Widget _getDefaultBody() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  'You have pushed the button this many times:',
+                  textAlign: TextAlign.center,
+                  style: (Theme.of(context).platform == TargetPlatform.macOS)
+                      ? macTextStyle
+                      : googleTextStyle,
+                ),
+                _getColoredDivider(context: context),
+                Text(
+                  '$_counter',
+                  style: Theme.of(context).textTheme.display3.merge(
+                        TextStyle(
+                          color: Colors.deepPurpleAccent,
+                          fontSize: 60,
+                        ),
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _getPaddedFAB() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         5.0,
@@ -82,11 +117,11 @@ class _MyHomePageState extends State<MyHomePage> {
         5.0,
         5.0,
       ),
-      child: getCentralFAB(),
+      child: _getMainFAB(),
     );
   }
 
-  Widget getMaskForWidget(Widget embeddedChildWidget) {
+  Widget _getMaskForWidget(Widget embeddedChildWidget) {
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -108,8 +143,22 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  int _index = 0;
+
   @override
   Widget build(BuildContext context) {
+    Widget child;
+    switch (_index) {
+      case 0:
+        child = _getDefaultBody();
+        break;
+      case 1:
+        child = MiCard();
+        break;
+      case 2:
+        child = FlutterLogo(colors: Colors.red);
+        break;
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -120,66 +169,46 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    'You have pushed the button this many times:',
-                    textAlign: TextAlign.center,
-                    style: (Theme.of(context).platform == TargetPlatform.macOS)
-                        ? macTextStyle
-                        : googleTextStyle,
-                  ),
-                  getColoredDivider(context: context),
-                  Text(
-                    '$_counter',
-                    style: Theme.of(context).textTheme.display3.merge(
-                          TextStyle(
-                            color: Colors.deepPurpleAccent,
-                            fontSize: 60,
-                          ),
-                        ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: SizedBox.expand(child: child),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-            // sets the background color of the `BottomNavigationBar`
-            canvasColor: Colors.green,
-            // sets the active color of the `BottomNavigationBar` if `Brightness` is light
-            primaryColor: Colors.red,
-            textTheme: Theme.of(context).textTheme.copyWith(
-                caption: TextStyle(
-                    color: Colors
-                        .yellow))), // sets the inactive color of the `BottomNavigationBar`
+          // sets the background color of the `BottomNavigationBar`
+          canvasColor: Colors.green,
+          // sets the active color of the `BottomNavigationBar` if `Brightness` is light
+          primaryColor: Colors.red,
+          textTheme: Theme.of(context).textTheme.copyWith(
+                caption: TextStyle(color: Colors.yellow),
+              ),
+        ), // sets the inactive color of the `BottomNavigationBar`
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          currentIndex: 0,
-          items: <BottomNavigationBarItem>[
+          currentIndex: _index,
+          items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.menu),
-              title: Text("Menu"),
+              icon: Icon(Icons.home),
+              title: Text("Home"),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline),
+              title: Text("Profile"),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),
               title: Text("Settings"),
             )
           ],
+          onTap: (newIndex) {
+            //print(newIndex.toString());
+            setState(() {
+              _index = newIndex;
+            });
+          },
         ),
       ),
       extendBody: true,
-      floatingActionButton: getMaskForWidget(getEmbeddedFAB()),
+      floatingActionButton: _getMaskForWidget(_getPaddedFAB()),
       floatingActionButtonLocation: FloatingActionButtonLocation
-          .centerDocked, // This trailing comma makes auto-formatting nicer for build methods.
+          .endTop, // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
