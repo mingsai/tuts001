@@ -2,8 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MiCard extends StatelessWidget {
+  TextEditingController _emailFieldControlleer = TextEditingController();
+  TextEditingController _pwdFieldControlleer = TextEditingController();
+
   void _dismissKeyboard(BuildContext context) {
-    FocusScope.of(context).unfocus();
+    if (FocusScope.of(context).hasFocus) FocusScope.of(context).unfocus();
+  }
+
+  void _displaySnackBar(BuildContext context, String displayText) {
+    if (displayText.isEmpty) return;
+    final widget = Text(
+      displayText,
+      style: GoogleFonts.aladin(fontSize: 20, fontWeight: FontWeight.bold),
+    );
+    final snackBar = SnackBar(content: widget);
+    Scaffold.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -32,19 +45,22 @@ class MiCard extends StatelessWidget {
         SizedBox(
           width: 100,
           child: TextField(
+            controller: _emailFieldControlleer,
             textAlign: TextAlign.center,
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: 'Email Address',
             ),
             onEditingComplete: () {
-              FocusScope.of(context).unfocus();
+              _dismissKeyboard(context);
+//              _displaySnackBar(context, _emailFieldControlleer.text);
             },
           ),
         ),
         SizedBox(
           width: 100,
           child: TextField(
+            controller: _pwdFieldControlleer,
             textAlign: TextAlign.center,
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -53,7 +69,10 @@ class MiCard extends StatelessWidget {
             ),
             obscureText: true,
             onEditingComplete: () {
-              FocusScope.of(context).unfocus();
+              //print(_pwdFieldControlleer.text);
+              //FocusScope.of(context).unfocus();
+              _dismissKeyboard(context);
+//              _displaySnackBar(context, _pwdFieldControlleer.text);
             },
           ),
         ),
@@ -61,7 +80,14 @@ class MiCard extends StatelessWidget {
           disabledColor: Colors.brown[50],
           color: Colors.brown[100],
           onPressed: () {
-            FocusScope.of(context).unfocus();
+            _dismissKeyboard(context);
+            final String data = 'email: ' +
+                _emailFieldControlleer.text +
+                ' pwd: ' +
+                _pwdFieldControlleer.text;
+            _displaySnackBar(context, data);
+
+            //FocusScope.of(context).unfocus();
             print('Begin');
           },
           icon: Icon(Icons.person),

@@ -168,7 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child = MiCard();
         break;
       case 2:
-        child = FlutterLogo(colors: Colors.red);
+        child = FlutterLogo(colors: Colors.red); // SettingsScreen();
         break;
     }
     return Scaffold(
