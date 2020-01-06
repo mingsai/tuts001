@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MiCard extends StatelessWidget {
-  TextEditingController _emailFieldControlleer = TextEditingController();
-  TextEditingController _pwdFieldControlleer = TextEditingController();
+  final TextEditingController _emailFieldControlleer = TextEditingController();
+  final TextEditingController _pwdFieldControlleer = TextEditingController();
 
   void _dismissKeyboard(BuildContext context) {
     if (FocusScope.of(context).hasFocus) FocusScope.of(context).unfocus();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tuts001/views/mi_card.dart';
+import 'package:tuts001/views/settings_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -168,7 +169,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child = MiCard();
         break;
       case 2:
-        child = FlutterLogo(colors: Colors.red); // SettingsScreen();
+        child =
+            SettingsScreen(); //FlutterLogo(colors: Colors.red); // SettingsScreen();
         break;
     }
     return Scaffold(
